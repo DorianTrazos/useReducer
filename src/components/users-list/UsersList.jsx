@@ -30,7 +30,10 @@ const UsersList = ({
       </div>
       <div>
         <label htmlFor='items-per-page'>Usuarios por página</label>
-        <select onChange={event => setItemsPerPage(event.target.value)}>
+        <select
+          onChange={event => setItemsPerPage(event.target.value)}
+          value={itemsPerPage}
+        >
           <option value='2'>2</option>
           <option value='4'>4</option>
           <option value='6'>6</option>
@@ -43,15 +46,13 @@ const UsersList = ({
             <img
               src={user.profileImage}
               alt={user.name}
-              width='32'
+              width='64'
               style={{
-                borderRadius: '50%',
-                verticalAlign: 'middle',
-                marginRight: '8px'
+                borderRadius: '50%'
               }}
             />
-            <strong>{user.name}</strong> @{user.username} –{' '}
-            {user.active ? '✅' : '❌'}
+            <strong>{user.name}</strong> @{user.username} ---{' '}
+            <span>{user.active ? '✅' : '❌'}</span>
           </li>
         ))}
       </ul>
@@ -83,18 +84,18 @@ const filterUsers = (users, showActiveOnly) => {
   return users.filter(user => user.active);
 };
 
+// 🔹 Controlador de filtro activo
+const toggleActive = (showActiveOnly, setShowActiveOnly, setPage) => {
+  setShowActiveOnly(!showActiveOnly);
+  setPage(1);
+};
+
 // 🔹 Función para paginar
 const paginateUsers = (users, page, itemsPerPage) => {
   const totalPages = Math.ceil(users.length / itemsPerPage);
   const startIndex = (page - 1) * itemsPerPage;
   const currentPageItems = users.slice(startIndex, startIndex + itemsPerPage);
   return { currentPageItems, totalPages };
-};
-
-// 🔹 Controlador de filtro activo
-const toggleActive = (showActiveOnly, setShowActiveOnly, setPage) => {
-  setShowActiveOnly(!showActiveOnly);
-  setPage(1);
 };
 
 export default UsersList;
